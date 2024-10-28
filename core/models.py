@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+
 class Participante(models.Model):
     order = models.CharField(max_length=100)
     nome = models.CharField(max_length=100)

@@ -1,6 +1,5 @@
 .env
 venv
-*.xlsx
 migrations
 db.sqlite3
-**/__pycache__/
+certipy/__pycache__/
