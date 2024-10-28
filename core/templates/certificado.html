@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <title>CertPy - Certificados Pythonicos</title>
+</head>
+<body>
+
+<div class="certificado_model">
+    <div class="certificado-page">
+        <img src="../static/img/page1.png" alt="Page 1">
+        <div class="dado_participantes_pagina1"> 
+            Certificamos para os devidos fins que {{ participantes.0.nome }} realizou as atividade realizadas na vigésima edição da Python Brasil, realizada no Rio de Janeiro – RJ, com uma carga horária total de {{ total_horas }} horas e {{ total_minutos }} minutos.
+        </div>
+    </div>
+    
+    <div class="certificado-page">
+        <img src="../static/img/page2.png" alt="Page 2">
+        <div class="dado_participantes_pagina2">
+            <h3>Atividades realizadas:</h3>
+            {% for participante in participantes %}
+                {% if participante.ingresso == "Tutorial" %}
+                    <p><strong>{{ participante.ingresso }}</strong>: {{ participante.curso }} | Carga Horária: {{ participante.carga_horaria }}</p>
+                {% else %}
+                    <p><strong>{{ participante.ingresso }} | Carga Horária: {{ participante.carga_horaria }}</strong></p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="../static/js/script.js"></script>
+</body>
+</html>

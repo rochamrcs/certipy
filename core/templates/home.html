@@ -10,23 +10,22 @@
     <title>CertPy - Certificados Pythonicos</title>
 </head>
 <body>
-    {% if busca_realizada %}
     <div class="container">
-        <h2>Bem vindo(a)! {{ participantes.0.nome }}</h2>
+        <h2>Bem vindo(a)!</h2>
         <div class="formulario">
             <form method="POST">
                 {% csrf_token %}
                 <div class="email-container">
                     <label for="teste">Email:</label>
                     <input type="email" name="teste" id="teste" required>
-                    <input type="submit" value="Enviar">
+                    <input type="submit" value="Pesquisar">
                 </div>
             </form>
         </div>
 
-        
+        {% if busca_realizada %}
             {% if participantes %}
-            <h2>Dados de participação:</h2>
+                <h2>Participante {{ participantes.0.nome }}</h2>
                 <ul>
                     {% for participante in participantes %}
                         <li>
@@ -40,5 +39,33 @@
             {% endif %}
         {% endif %}
     </div>
+
+    <div class="certificado_model">
+        <div class="certificado-page">
+            <img src="./static/img/page1.png" alt="Page 1">
+            <div class="dado_participantes_pagina1"> 
+                Certificamos para os devidos fins que {{ participantes.0.nome }} realizou as atividade realizadas na vigésima edição da Python Brasil, realizada no Rio de Janeiro – RJ, com uma carga horária total de {{ total_horas }} horas e {{ total_minutos }} minutos.
+            </div>
+        </div>
+        
+        <div class="certificado-page">
+            <img src="./static/img/page2.png" alt="Page 2">
+            <div class="dado_participantes_pagina2">
+                <h3>Atividades realizadas:</h3>
+                {% for participante in participantes %}
+                    {% if participante.ingresso == "Tutorial" %}
+                        <p><strong>{{ participante.ingresso }}</strong>: {{ participante.curso }} | Carga Horária: {{ participante.carga_horaria }}</p>
+                    {% else %}
+                        <p><strong>{{ participante.ingresso }} | Carga Horária: {{ participante.carga_horaria }}</strong></p>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="./static/js/script.js"></script>
 </body>
 </html>
+
