@@ -3,9 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <title>CertPy - Certificados Pythonicos</title>
 </head>
 <body>
-    <h1>Olá mundo!</h1>
+    {% if busca_realizada %}
+    <div class="container">
+        <h2>Bem vindo(a)! {{ participantes.0.nome }}</h2>
+        <div class="formulario">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="email-container">
+                    <label for="teste">Email:</label>
+                    <input type="email" name="teste" id="teste" required>
+                    <input type="submit" value="Enviar">
+                </div>
+            </form>
+        </div>
+
+        
+            {% if participantes %}
+            <h2>Dados de participação:</h2>
+                <ul>
+                    {% for participante in participantes %}
+                        <li>
+                            <strong>{{ participante.ingresso }}:</strong> {{ participante.curso }} | Carga Horária:</strong> {{ participante.carga_horaria }}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <button class="certificado-btn">Gerar Certificado</button>
+            {% else %}
+                <p>Nenhum participante encontrado com esse email.</p>
+            {% endif %}
+        {% endif %}
+    </div>
 </body>
 </html>
