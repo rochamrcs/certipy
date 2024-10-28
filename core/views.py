@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Participante 
 
 def somar_cargas_horarias(cargas_horarias):
@@ -40,9 +40,13 @@ def home(request):
         participantes = Participante.objects.filter(email=email)
         busca_realizada = True 
 
-
         cargas_horarias = [p.carga_horaria for p in participantes]
         total_horas, total_minutos = somar_cargas_horarias(cargas_horarias)
+
+        # Armazenar dados na sessão
+        request.session['participantes'] = list(participantes.values())
+        request.session['total_horas'] = total_horas
+        request.session['total_minutos'] = total_minutos
 
     return render(request, 'home.html', {
         'participantes': participantes,
@@ -52,11 +56,10 @@ def home(request):
     })
 
 def certificados(request):
-    # Este view precisa receber os dados do participante e horas total.
-    # Supondo que você tenha uma lógica para obter esses dados.
-    participantes = []  # Aqui você deve obter os dados de participantes relevantes
-    total_horas = 0
-    total_minutos = 0
+    # Recuperar os dados da sessão
+    participantes = request.session.get('participantes', [])
+    total_horas = request.session.get('total_horas', 0)
+    total_minutos = request.session.get('total_minutos', 0)
 
     return render(request, 'certificado.html', {
         'participantes': participantes,
