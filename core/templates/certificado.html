@@ -24,10 +24,14 @@
         <div class="dado_participantes_pagina2">
             <h3>Atividades realizadas:</h3>
             {% for participante in participantes %}
-                {% if participante.ingresso == "Tutorial" %}
+                {% if participante.ingresso == "Instrutor"%}
+                    <p><strong>Ministrou o tutorial - {{ participante.curso }}</strong> | Carga Horária: {{ participante.carga_horaria }}</p>
+                {% elif participante.ingresso == "Palestrante" %}
+                    <p><strong>Apresentou a palestra sobre - {{ participante.curso }}</strong> | Carga Horária: {{ participante.carga_horaria }}</p>
+                {% elif participante.ingresso == "Tutorial" %}
                     <p><strong>{{ participante.ingresso }}</strong>: {{ participante.curso }} | Carga Horária: {{ participante.carga_horaria }}</p>
                 {% else %}
-                    <p><strong>{{ participante.ingresso }} | Carga Horária: {{ participante.carga_horaria }}</strong></p>
+                    <p><strong>{{ participante.ingresso }} | Carga Horária: {{ carga_palestras }}</strong></p>
                 {% endif %}
             {% endfor %}
         </div>

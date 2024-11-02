@@ -35,6 +35,7 @@ def home(request):
     busca_realizada = False 
     total_horas = 0
     total_minutos = 0
+    carga_palestras = 0
 
     if request.method == "POST":
         email = request.POST.get('teste')
@@ -49,20 +50,39 @@ def home(request):
         ).order_by('curso_priority', 'curso')  # Ordena por prioridade e pelo nome do curso
 
         busca_realizada = True 
+        tipo = []
+
+        for participante in participantes:
+            participante.is_palestrante = (participante.ingresso == "Palestrante")
+            if participante.is_palestrante:
+                tipo.append("Palestrante")
+            else:
+                pass
 
         cargas_horarias = [p.carga_horaria for p in participantes]
         total_horas, total_minutos = somar_cargas_horarias(cargas_horarias)
+
+        if "Palestrante" in tipo:
+            total_horas -= 1
+            total_minutos = 30
+            carga_palestras = "13 horas"
+        else:
+            carga_palestras = "13 horas e 30 minutos"
+        
+        print(carga_palestras)
 
         # Armazenar dados na sessão
         request.session['participantes'] = list(participantes.values())
         request.session['total_horas'] = total_horas
         request.session['total_minutos'] = total_minutos
+        request.session['carga_palestras'] = carga_palestras
 
     return render(request, 'home.html', {
         'participantes': participantes,
         'busca_realizada': busca_realizada,
         'total_horas': total_horas,
         'total_minutos': total_minutos,
+        'carga_palestras': carga_palestras
     })
 
 def certificados(request):
@@ -70,9 +90,11 @@ def certificados(request):
     participantes = request.session.get('participantes', [])
     total_horas = request.session.get('total_horas', 0)
     total_minutos = request.session.get('total_minutos', 0)
+    carga_palestras = request.session.get('carga_palestras', 0)
 
     return render(request, 'certificado.html', {
         'participantes': participantes,
         'total_horas': total_horas,
         'total_minutos': total_minutos,
+        'carga_palestras': carga_palestras
     })

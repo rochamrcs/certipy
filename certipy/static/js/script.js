@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', async function() {
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF('l', 'mm', 'a4'); // 'l' para orientação paisagem
-
+    
     // Obtém o nome da pessoa
     const nomePessoa = document.getElementById('nomePessoa') ? document.getElementById('nomePessoa').innerText.trim() : 'certificado'
 
