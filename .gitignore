@@ -3,3 +3,6 @@ venv
 migrations
 db.sqlite3
 **/__pycache__/
+api_teste.py
+auto_email.py
+emails.txt
