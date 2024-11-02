@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from .models import Participante 
+from django.db.models import Case, When, Value, IntegerField
 
 def somar_cargas_horarias(cargas_horarias):
     total_horas = 0
@@ -37,7 +38,16 @@ def home(request):
 
     if request.method == "POST":
         email = request.POST.get('teste')
-        participantes = Participante.objects.filter(email=email)
+        # Ordena para que "Tutoriais" venham antes de "Palestras"
+        participantes = Participante.objects.filter(email=email).annotate(
+            curso_priority=Case(
+                When(curso="Tutoriais", then=Value(1)),   # Prioridade 1 para Tutoriais
+                When(curso="Palestras", then=Value(2)),   # Prioridade 2 para Palestras
+                default=Value(3),                         # Outras categorias terão prioridade 3
+                output_field=IntegerField()
+            )
+        ).order_by('curso_priority', 'curso')  # Ordena por prioridade e pelo nome do curso
+
         busca_realizada = True 
 
         cargas_horarias = [p.carga_horaria for p in participantes]
